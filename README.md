@@ -1,5 +1,4 @@
 # AngularApplication
-Single Page Application
 Hi, Welcome to my repository.
 I'm an aspiring developer and am trying popular web development frameworks to upskill myself
 as prospective developer.
