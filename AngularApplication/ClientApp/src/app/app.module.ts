@@ -11,6 +11,7 @@ import { ResumeComponent } from './resume/resume.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PortfolioComponent } from './portfolio/portfolio.component';
 import { ContactComponent } from './contact/contact.component';
+import { SharedService } from './shared.service';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,7 @@ import { ContactComponent } from './contact/contact.component';
     ], { relativeLinkResolution: 'legacy' }),
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [SharedService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
