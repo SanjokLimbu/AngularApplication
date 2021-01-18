@@ -1,42 +1,33 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.IO;
-using System.Threading.Tasks;
+using System.Net;
+using System.Net.Http;
 
 namespace AngularApplication.Controllers
 {
-    
     [Route("api/[Controller]")]
     [ApiController]
     public class DownloadController : Controller
     {
         private readonly IWebHostEnvironment _env;
+        private HttpResponseMessage response;
 
         public DownloadController(IWebHostEnvironment env)
         {
             _env = env;
         }
         [HttpGet]
-        public async Task<IActionResult> Download()
+        public HttpResponseMessage GetDownloadFile()
         {
             string filePath = Path.Combine(_env.WebRootPath, "Image\\CV.doc");
-            using MemoryStream memorystream = new MemoryStream();
-            using (var stream = new FileStream(filePath, FileMode.Open))
+            var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            response = new HttpResponseMessage
             {
-                await stream.CopyToAsync(memorystream);
-            }
-            memorystream.Position = 0;
-            return File(memorystream, "application/msword", "CV.doc");
-            //try
-            //{
-            //    var stream = new FileStream(filePath, FileMode.Open);
-            //    await stream.CopyToAsync(memoryStream);
-            //}
-            //finally
-            //{
-            //    return File(memoryStream, "application/msword", "CV.doc");
-            //}
+                StatusCode = HttpStatusCode.OK,
+                Content = new StreamContent(fileStream)
+            };
+            return response;
         }
     }
 }
