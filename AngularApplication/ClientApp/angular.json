@@ -26,8 +26,7 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css"
             ],
-            "scripts": [
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -78,8 +77,7 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": [
-            ],
+            "scripts": [],
             "assets": [
               "src/assets",
               "src/manifest.webmanifest"
@@ -122,6 +120,12 @@
               "extractLicenses": true,
               "vendorChunk": false
             }
+          }
+        },
+        "analyze": {
+          "builder": "@ngx-builders/analyze:analyze",
+          "options": {
+            "outputPath": "dist"
           }
         }
       },

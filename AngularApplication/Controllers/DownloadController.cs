@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
-using System.Net;
-using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace AngularApplication.Controllers
 {
@@ -11,23 +10,28 @@ namespace AngularApplication.Controllers
     public class DownloadController : Controller
     {
         private readonly IWebHostEnvironment _env;
-        private HttpResponseMessage response;
 
         public DownloadController(IWebHostEnvironment env)
         {
             _env = env;
         }
         [HttpGet]
-        public HttpResponseMessage GetDownloadFile()
+        public async Task<IActionResult> GetDownloadFile()
         {
             string filePath = Path.Combine(_env.WebRootPath, "Image\\CV.doc");
-            var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-            response = new HttpResponseMessage
+            FileStream stream = null;
+            try
             {
-                StatusCode = HttpStatusCode.OK,
-                Content = new StreamContent(fileStream)
-            };
-            return response;
+                MemoryStream memoryStream = new MemoryStream();
+                stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+                await stream.CopyToAsync(memoryStream);
+                memoryStream.Position = 0;
+                return File(memoryStream, "text/plain");
+            }
+            finally
+            {
+                if (stream != null) stream.Dispose();
+            }
         }
     }
 }
